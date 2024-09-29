@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Medical Diagnosis Assistance</title>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <i class="fas fa-heartbeat fa-2x"></i>
+            <h1>Medical Diagnosis Assistance</h1>
+            <p><strong>Powered by LLMs</strong></p>
+        </header>
+        
+        <div class="content">
+            <div class="left-column">
+                <h2>Patient Information</h2>
+                <form action="/submit" method="POST">
+                    <div class="form-group">
+                        <label for="age">Age:</label>
+                        <input type="number" id="age" name="age" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="gender" value="male" required> Male</label>
+                            <label><input type="radio" name="gender" value="female" required> Female</label>
+                            <label><input type="radio" name="gender" value="other" required> Other</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Patient History:</label>
+                        <textarea id="notes" name="history" placeholder="Hypertension, ..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Symptoms:</label>
+                        <textarea id="notes" name="symptoms" placeholder="Chest Pain, Shortness of breath, ..."></textarea>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div class="right-column">
+                <h2>Possible Diagnosis & Treatment</h2>
+                <% if (diagnosis) { %>
+                    <p><%= diagnosis %></p>
+                    <% if (treatment.length > 0) { %>
+                        <% treatment.forEach(category => { %>
+                            <div class="category">
+                                <div class="category-header" onclick="toggleCategory(this)">
+                                    <h3><%= category.Category %></h3>
+                                    <span class="toggle-icon">+</span>
+                                </div>
+                                <div class="category-details" style="display: none;">
+                                    <ul>
+                                        <% category.Treatments.forEach(treatment => { %>
+                                            <li>
+                                                <strong><%= treatment.description %></strong> - Error Score: <%= treatment.score %>
+                                            </li>
+                                        <% }); %>
+                                    </ul>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <p>No treatments available.</p>
+                    <% } %>
+                <% } else { %>
+                    <p>No results available. Please provide more information.</p>
+                <% } %>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2024 Medical Diagnosis Assistance</p>
+        </footer>
+    </div>
+
+    <p class="disclaimer">
+        Disclaimer: This application is intended for informational purposes only and should not be used as a substitute for professional medical advice, diagnosis, or treatment.
+    </p>
+
+    <script>
+      function toggleCategory(header) {
+          const details = header.nextElementSibling;
+          const toggleIcon = header.querySelector('.toggle-icon');
+          
+          if (details.style.display === "none" || details.style.display === "") {
+              details.style.display = "block";
+              toggleIcon.textContent = "-"; // Change icon to minus
+          } else {
+              details.style.display = "none";
+              toggleIcon.textContent = "+"; // Change icon to plus
+          }
+      }
+    </script>
+
+</body>
+</html>
+
+

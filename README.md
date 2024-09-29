@@ -12,4 +12,4 @@ NPM Setup:
 
 
 Run Project:
-`NPM Start`
+`npm start`
